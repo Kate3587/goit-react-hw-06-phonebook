@@ -1,13 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { nanoid } from 'nanoid';
+
+import { addContact } from '../../reduxe/contacts/contactsSlice.js';
 import {PhoneForm, FormLabel, FormInput, FormBtn} from './ContactForm.styled'
 
-const ContactForm = ({onSubmit}) =>{
+const ContactForm = () => {
+
+  const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
 
   const handleChange = event => {
     const { value, name } = event.target;
@@ -26,7 +30,7 @@ const ContactForm = ({onSubmit}) =>{
   
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit(name, number);
+    dispatch(addContact({ name, number, id: nanoid() }));
     setName('');
     setNumber('');
   };
@@ -67,7 +71,3 @@ const ContactForm = ({onSubmit}) =>{
   };
 
 export default ContactForm;
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
